@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Verify — jewellery design</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #0a0a0a; color: #eee;
+                 font: 14px/1.4 -apple-system, system-ui, sans-serif; min-height: 100%; }
+    header { padding: 14px 16px; display: flex; justify-content: space-between;
+             align-items: center; border-bottom: 1px solid #222; }
+    header h1 { margin: 0; font-size: 16px; font-weight: 600; }
+    header a  { color: #9ad; text-decoration: none; font-size: 13px; }
+    main { max-width: 880px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+    .panel { background: #141414; border: 1px solid #222; border-radius: 10px; padding: 14px; }
+    .panel h2 { margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #ddd; }
+    .stage { position: relative; width: 100%; aspect-ratio: 1; background: #000;
+             border-radius: 8px; overflow: hidden; touch-action: none; }
+    .stage img, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+                                 display: block; user-select: none; }
+    .stage canvas { cursor: crosshair; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .row > * { flex: 0 0 auto; }
+    label { font-size: 12px; opacity: 0.7; display: block; margin-bottom: 4px; }
+    input[type="file"] { font-size: 13px; }
+    input[type="range"] { width: 140px; vertical-align: middle; }
+    textarea, input[type="text"] {
+      width: 100%; background: #0a0a0a; color: #eee; border: 1px solid #2a2a2a;
+      border-radius: 6px; padding: 10px; font: inherit; resize: vertical;
+    }
+    button {
+      padding: 10px 16px; font: inherit; font-weight: 600;
+      border-radius: 8px; border: 0; cursor: pointer;
+    }
+    button.primary   { background: #fff;    color: #000; }
+    button.secondary { background: #2a2a2a; color: #eee; }
+    button.danger    { background: #3a1a1a; color: #f99; }
+    button:disabled  { opacity: 0.4; cursor: not-allowed; }
+    #history { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    #history .thumb { width: 72px; height: 72px; flex: 0 0 auto;
+                      border-radius: 6px; overflow: hidden; border: 2px solid transparent;
+                      cursor: pointer; background: #000; position: relative; }
+    #history .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    #history .thumb.active { border-color: #9ad; }
+    #history .thumb .lbl { position: absolute; left: 4px; bottom: 4px;
+                            background: rgba(0,0,0,0.6); color: #fff;
+                            font-size: 10px; padding: 1px 4px; border-radius: 3px; }
+    .status { font-size: 12px; color: #9a9; min-height: 1.2em; }
+    .err    { color: #f99; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Verify jewellery design</h1>
+    <a href="../public">← try-on</a>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1. Load image</h2>
+      <div class="row">
+        <input type="file" id="fileInput" accept="image/*" />
+        <button class="secondary" id="loadSampleBtn">Use sample</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Paint what to change</h2>
+      <div class="stage" id="stage">
+        <img id="baseImage" alt="" />
+        <canvas id="maskCanvas"></canvas>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div>
+          <label>Brush size</label>
+          <input type="range" id="brushSize" min="8" max="120" value="40" />
+        </div>
+        <div style="align-self: flex-end;">
+          <button class="secondary" id="undoBtn">Undo stroke</button>
+          <button class="danger" id="clearBtn">Clear mask</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>3. Describe the change</h2>
+      <textarea id="prompt" rows="3"
+        placeholder="Replace the centre stone with an emerald, keep the setting style and band."></textarea>
+      <div class="row" style="margin-top: 10px;">
+        <button class="primary" id="regenBtn">Regenerate selected area</button>
+        <button class="secondary" id="approveBtn">Approve current</button>
+        <span class="status" id="status"></span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>4. History</h2>
+      <div id="history"></div>
+      <div class="status" id="histStatus">Each regeneration is saved here. Tap a thumb to revert.</div>
+    </section>
+  </main>
+
+  <script type="module" src="verify.js"></script>
+</body>
+</html>

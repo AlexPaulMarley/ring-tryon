@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>Ring try-on</title>
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; background: #000; height: 100%; }
+    #video, #three-canvas {
+      position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    #three-canvas { pointer-events: none; }
+    #status {
+      position: fixed; top: max(16px, env(safe-area-inset-top)); left: 50%;
+      transform: translateX(-50%); z-index: 10;
+      background: rgba(0,0,0,0.55); color: white;
+      padding: 8px 14px; border-radius: 8px;
+      font: 13px/1.2 -apple-system, system-ui, sans-serif;
+      white-space: nowrap;
+    }
+    #start {
+      position: fixed; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: #0a0a0a; color: #fff; gap: 16px; padding: 24px; text-align: center;
+      font: 15px/1.4 -apple-system, system-ui, sans-serif;
+    }
+    #start h1 { font-size: 22px; margin: 0; font-weight: 600; }
+    #start p { margin: 0; opacity: 0.7; max-width: 300px; }
+    #start button {
+      margin-top: 12px; padding: 14px 28px; font-size: 17px; font-weight: 600;
+      border-radius: 999px; background: #fff; color: #000; border: 0;
+    }
+    #start button:disabled { opacity: 0.5; }
+    #error { color: #ff8a8a; font-size: 13px; min-height: 1em; }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three":                     "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/":              "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/",
+      "@mediapipe/tasks-vision":    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs"
+    }
+  }
+  </script>
+</head>
+<body>
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="three-canvas"></canvas>
+  <div id="status">Tap to start</div>
+
+  <div id="start">
+    <h1 id="startTitle">Ring try-on</h1>
+    <p>Point your rear camera at your hand, with your ring finger toward the lens.</p>
+    <button id="startBtn">Start</button>
+    <div id="error"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
