@@ -86,12 +86,12 @@ const PRESETS = {
     occluderRadius:   0.008,
     occluderLength:   0.040,
     targetDiameter:   0.020,
-    placementLerp:    0.25,    // 25% from MCP toward PIP
+    placementLerp:    0.45,    // ~45% from MCP toward PIP — sits on proximal phalanx, not knuckle
   },
   bracelet: {
-    placeholderOuter: 0.032,   // 64 mm OD
+    placeholderOuter: 0.038,   // 76 mm OD — fits an average wrist without passing through
     placeholderTube:  0.004,
-    occluderRadius:   0.028,   // wrist radius ≈ 28 mm
+    occluderRadius:   0.032,   // wrist half-width ≈ 32 mm
     occluderLength:   0.100,
     targetDiameter:   0.065,
     placementOffset:  0.015,   // shift from wrist into the forearm
